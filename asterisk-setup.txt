@@ -61,4 +61,7 @@ systemctl enable asterisk
 systemctl restart asterisk
 
 # how To Remove Asterisk
-# rm -r /usr/src/asterisk-20.*
+# killall -9 safe_asterisk
+# killall -9 asterisk
+# systemctl disable asterisk
+# rm -r /usr/src/asterisk-20.* /etc/asterisk /var/log/asterisk /var/lib/asterisk /var/spool/asterisk /usr/lib/asterisk
