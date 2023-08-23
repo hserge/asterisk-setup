@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# update the system
+sudo apt update
+
+
+# add dependencies
+sudo apt -y install git curl wget libnewt-dev libssl-dev libncurses5-dev subversion libsqlite3-dev build-essential libjansson-dev libxml2-dev uuid-dev
+
+# download and extract Asterisk 20
+cd /usr/src && sudo curl -O https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-20-current.tar.gz
+sudo tar xvf asterisk-20-current.tar.gz
+cd asterisk-20.*
+
+# download MP3 decoder library
+sudo contrib/scripts/get_mp3_source.sh
+
+# make sure all dependencies are resolved
+sudo contrib/scripts/install_prereq install
+
+# configure asterisk
+sudo ./configure
+
+# setup menu options
+sudo make menuselect
+
+# build
+sudo make
+
+# install
+sudo make install
+
+# install samples and configs
+sudo make samples && sudo make config && sudo make ldconfig
+
+# add asterisk group, user
+sudo groupadd asterisk
+sudo useradd -r -d /var/lib/asterisk -g asterisk asterisk
+sudo usermod -aG audio,dialout asterisk
+
+# set permissions
+sudo chown -R asterisk.asterisk /etc/asterisk
+sudo chown -R asterisk.asterisk /var/{lib,log,spool}/asterisk
+sudo chown -R asterisk.asterisk /usr/lib/asterisk
+
+# set "asterisk" as default user, then restart
+sudo echo -e "\n\n\n# installer\nAST_USER=\"asterisk\"\nAST_GROUP=\"asterisk\"" >> /etc/default/asterisk
+
+# before enabling asterisk service we need to fix radiuscfg by fixing the path
+sudo sed -i 's/;[radius]/[radius]\nradiuscfg => /etc/radcli/radiusclient.conf\n/' /etc/asterisk/cdr.conf
+
+sudo nano /etc/asterisk/cel.conf
+sudo echo -e "\n\n\n# installer\nradiuscfg => /etc/radcli/radiusclient.conf" >> /etc/default/asterisk
+
+
+# enable asterisk service and restart
+sudo systemctl enable asterisk
+sudo systemctl restart asterisk
+
+# how To Remove Asterisk
+# sudo rm -r /usr/src/asterisk-20.*
