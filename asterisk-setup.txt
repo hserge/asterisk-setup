@@ -47,7 +47,7 @@ echo -e "\n\n# installer\nAST_USER=\"asterisk\"\nAST_GROUP=\"asterisk\"" >> /etc
 
 # before enabling asterisk service we need to fix radiuscfg by fixing the path
 sed -i 's|;\[radius\]|[radius]\nradiuscfg => /etc/radcli/radiusclient.conf\n|' /etc/asterisk/cdr.conf
-echo -e "\n\n\n# installer\nradiuscfg => /etc/radcli/radiusclient.conf" >> /etc/default/asterisk
+echo -e "\n\n\n# installer\nradiuscfg => /etc/radcli/radiusclient.conf" >> /etc/asterisk/cel.conf
 
 # enable asterisk service and restart
 systemctl enable asterisk
