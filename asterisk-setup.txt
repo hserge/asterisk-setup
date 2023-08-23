@@ -20,7 +20,18 @@ contrib/scripts/install_prereq install
 # configure asterisk
 ./configure
 
-# setup menu options
+# deactivate menuselect options we dont need
+ENABLE_OPTIONS="format_mp3 smsq CORE-SOUNDS-EN-WAV CORE-SOUNDS-EN-ULAW CORE-SOUNDS-EN-G729 MOH-OPSOUND-WAV MOH-OPSOUND-ULAW MOH-OPSOUND-G729 EXTRA-SOUNDS-EN-WAV EXTRA-SOUNDS-EN-ULAW EXTRA-SOUNDS-EN-G729"
+for option in $ENABLE_OPTIONS ; do
+menuselect/menuselect --enable $option menuselect.makeopts
+done
+
+DISABLE_OPTIONS="cdr_radius cel_radius app_adsiprog app_getcpeid res_adsi res_config_ldap res_config_pgsql res_phoneprov"
+for option in $DISABLE_OPTIONS ; do
+menuselect/menuselect --disable $option menuselect.makeopts
+done
+
+# setup/check menu options
 make menuselect
 
 # build
@@ -44,10 +55,6 @@ chown -R asterisk.asterisk /usr/lib/asterisk
 
 # set "asterisk" as default user, then restart
 echo -e "\n\n# installer\nAST_USER=\"asterisk\"\nAST_GROUP=\"asterisk\"" >> /etc/default/asterisk
-
-# before enabling asterisk service we need to fix radiuscfg by fixing the path
-sed -i 's|;\[radius\]|[radius]\nradiuscfg => /etc/radcli/radiusclient.conf\n|' /etc/asterisk/cdr.conf
-echo -e "\n\n\n# installer\nradiuscfg => /etc/radcli/radiusclient.conf" >> /etc/asterisk/cel.conf
 
 # enable asterisk service and restart
 systemctl enable asterisk
