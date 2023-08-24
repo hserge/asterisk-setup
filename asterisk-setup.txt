@@ -20,6 +20,9 @@ contrib/scripts/install_prereq install
 # configure asterisk
 ./configure
 
+# create menuselect before altering options
+make menuselect.makeopts
+
 # deactivate menuselect options we dont need
 ENABLE_OPTIONS="format_mp3 smsq CORE-SOUNDS-EN-WAV CORE-SOUNDS-EN-ULAW CORE-SOUNDS-EN-G729 MOH-OPSOUND-WAV MOH-OPSOUND-ULAW MOH-OPSOUND-G729 EXTRA-SOUNDS-EN-WAV EXTRA-SOUNDS-EN-ULAW EXTRA-SOUNDS-EN-G729"
 for option in $ENABLE_OPTIONS ; do
@@ -61,7 +64,6 @@ systemctl enable asterisk
 systemctl restart asterisk
 
 # how To Remove Asterisk
-# killall -9 safe_asterisk
-# killall -9 asterisk
+# killall -9 safe_asterisk asterisk
 # systemctl disable asterisk
 # rm -r /usr/src/asterisk-20.* /etc/asterisk /var/log/asterisk /var/lib/asterisk /var/spool/asterisk /usr/lib/asterisk
