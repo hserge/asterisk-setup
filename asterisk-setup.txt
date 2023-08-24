@@ -54,9 +54,8 @@ useradd -r -d /var/lib/asterisk -g asterisk asterisk
 usermod -aG audio,dialout asterisk
 
 # set permissions
-chown -R asterisk.asterisk /etc/asterisk
-chown -R asterisk.asterisk /var/{lib,log,spool}/asterisk
-chown -R asterisk.asterisk /usr/lib/asterisk
+sudo chown -R asterisk: /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/asterisk
+sudo chmod -R 750 /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/asterisk
 
 # set "asterisk" as default user, then restart
 echo -e "\n\n# installer\nAST_USER=\"asterisk\"\nAST_GROUP=\"asterisk\"" >> /etc/default/asterisk
