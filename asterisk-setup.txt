@@ -62,6 +62,12 @@ sudo chmod -R 750 /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/aster
 # set "asterisk" as default user, then restart
 echo -e "\n\n# installer\nAST_USER=\"asterisk\"\nAST_GROUP=\"asterisk\"" >> /etc/default/asterisk
 
+# configure filewall
+# for sip
+# sudo ufw allow 5060/udp
+# for real-time protocol
+# sudo ufw allow 10000:20000/udp
+
 # enable asterisk service and restart
 systemctl enable asterisk
 systemctl restart asterisk
