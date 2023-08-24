@@ -44,7 +44,9 @@ make
 make install
 
 # install samples and configs
-make samples && make config && make ldconfig
+make samples && make config
+# cache shared libs
+ldconfig
 
 # add asterisk group, user
 groupadd asterisk
@@ -63,7 +65,5 @@ echo -e "\n\n# installer\nAST_USER=\"asterisk\"\nAST_GROUP=\"asterisk\"" >> /etc
 systemctl enable asterisk
 systemctl restart asterisk
 
-# how To Remove Asterisk
-# killall -9 safe_asterisk asterisk
-# systemctl disable asterisk
-# rm -r /usr/src/asterisk-20.* /etc/asterisk /var/log/asterisk /var/lib/asterisk /var/spool/asterisk /usr/lib/asterisk
+# Remove Asterisk
+# killall -9 safe_asterisk asterisk  &&  systemctl disable asterisk  &&  rm -r /usr/src/asterisk-20.* /etc/asterisk /var/log/asterisk /var/lib/asterisk /var/spool/asterisk /usr/lib/asterisk  &&  ldconfig
