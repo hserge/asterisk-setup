@@ -43,8 +43,10 @@ make
 # install
 make install
 
-# install samples and configs
-make samples && make config
+# install (samples or basic-pbx) and configs
+# make samples
+make basic-pbx
+make config
 # cache shared libs
 ldconfig
 
