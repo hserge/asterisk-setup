@@ -4,12 +4,14 @@
 apt update
 
 # add php 7.4 repo
-apt -y install software-properties-common
+apt -y install software-properties-common language-pack-en-base
 LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php ppa:ondrej/apache2
 apt-get update
 
 # add dependencies
 apt install sox gnupg2 apache2 mariadb-server libapache2-mod-php7.4 php7.4 php-pear php7.4-cgi php7.4-common php7.4-curl php7.4-mbstring php7.4-gd php7.4-mysql php7.4-bcmath php7.4-zip php7.4-xml php7.4-imap php7.4-json php7.4-snmp -y
+# remove 8.* packages (workaround)
+sudo apt-get purge 'php8.*'
 
 ### Inatall Php7.4 Apache and MariaDB
 
@@ -48,4 +50,4 @@ systemctl restart apache2
 # access the FreePBX web interface using the URL http://your-server-ip/admin
 
 # Remove Asterisk
-# cd /usr/src/freepbx && ./install_amp --uninstall && rm -rf /usr/sbin/amportal /etc/amportal.conf /etc/asterisk/amportal.conf /etc/freepbx.conf /etc/asterisk/freepbx.conf 
+# cd /usr/src/freepbx && ./install_amp --uninstall && rm -rf /usr/src/freepbx /var/www/html/freepbx /usr/sbin/amportal /etc/amportal.conf /etc/asterisk/amportal.conf /etc/freepbx.conf /etc/asterisk/freepbx.conf 
